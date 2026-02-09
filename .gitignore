@@ -8,11 +8,14 @@
 .vs/
 .vscode/
 
-# Specific ignores for Assembly and Cache noise
+# Specific ignores for Assembly noise
 *.AssemblyInfo.cs
 *.AssemblyAttributes.cs
 *.cache
-*.json
+
+# --- NEW: Strategic JSON management ---
+# We want appsettings, but NOT the one with your real secrets
+appsettings.Development.json
 
 # --- Python Artifacts ---
 __pycache__/
