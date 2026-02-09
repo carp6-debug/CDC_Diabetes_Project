@@ -1,0 +1,113 @@
+@page "/risk-assessment"
+@using CDC_Diabetes.Models
+@using CDC_Diabetes.Data.Services
+@inject IHealthRiskService RiskService
+@using Microsoft.AspNetCore.Components.Web
+@rendermode InteractiveServer
+
+<PageTitle>Diabetes Risk Assessment</PageTitle>
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card shadow border-0">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0"><i class="bi bi-heart-pulse"></i> Health Indicators</h4>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Body Mass Index (BMI)</label>
+                        <input type="number" step="0.1" class="form-control form-control-lg" 
+                               value="@_survey.Bmi" 
+                               @oninput="UpdateBmi" />
+                        <div class="form-text">Dataset Average: 28.4 | Overweight: >25 | Obese: >30</div>
+                    </div>
+
+                    <div class="form-check form-switch mb-3">
+                        <input class="form-check-input" type="checkbox" id="bp" 
+                               @bind="_survey.HighBp" @bind:after="StateHasChanged" />
+                        <label class="form-check-label fw-bold" for="bp">High Blood Pressure</label>
+                    </div>
+
+                    <div class="form-check form-switch mb-3">
+                        <input class="form-check-input" type="checkbox" id="chol" 
+                               @bind="_survey.HighChol" @bind:after="StateHasChanged" />
+                        <label class="form-check-label fw-bold" for="chol">High Cholesterol</label>
+                    </div>
+
+                    <hr />
+
+                    <h6 class="text-muted mb-3">Lifestyle & Habits</h6>
+
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="checkbox" id="smoker" 
+                               @bind="_lifestyle.Smoker" @bind:after="StateHasChanged" />
+                        <label class="form-check-label" for="smoker">Regular Smoker</label>
+                    </div>
+
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="checkbox" id="activity" 
+                               @bind="_lifestyle.PhysActivity" @bind:after="StateHasChanged" />
+                        <label class="form-check-label" for="activity">Regular Physical Activity</label>
+                    </div>
+
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="checkbox" id="apples" 
+                               @bind="_lifestyle.HvyApples" @bind:after="StateHasChanged" />
+                        <label class="form-check-label" for="apples">Consumes Fruit Regularly</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card shadow border-0 h-100 bg-light">
+                <div class="card-body text-center d-flex flex-column justify-content-center">
+                    <h5 class="text-muted text-uppercase small fw-bold">Your Calculated Risk</h5>
+                    
+                    @{
+                        // Re-calculation happens automatically when StateHasChanged is called
+                        var score = RiskService.CalculateRiskScore(_survey, _lifestyle);
+                        var level = RiskService.GetRiskLevel(score);
+                        var barColor = score >= 70 ? "bg-danger" : (score >= 40 ? "bg-warning" : "bg-success");
+                    }
+
+                    <h1 class="display-1 fw-bold text-primary">@score%</h1>
+                    <h3 class="@(score >= 70 ? "text-danger" : "text-dark")">@level</h3>
+
+                    <div class="progress mt-4 shadow-sm" style="height: 40px;">
+                        <div class="progress-bar @barColor progress-bar-striped progress-bar-animated" 
+                             role="progressbar" 
+                             style="width: @score%; transition: width 0.5s ease-in-out;"></div>
+                    </div>
+
+                    <p class="mt-4 text-muted small px-4">
+                        <i class="bi bi-info-circle"></i> This predictive model uses weighted coefficients derived from 
+                        <strong>253,680</strong> records in the healthcare_analytics schema.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private FactDiabetesSurvey _survey = new();
+    private DimLifestyle _lifestyle = new();
+
+    protected override void OnInitialized()
+    {
+        _survey.Bmi = 25.0m;
+        _lifestyle.PhysActivity = true;
+    }
+
+    // Custom handler for BMI to ensure smooth decimal updates
+    private void UpdateBmi(ChangeEventArgs e)
+    {
+        if (decimal.TryParse(e.Value?.ToString(), out var result))
+        {
+            _survey.Bmi = result;
+            StateHasChanged(); // Forces the UI (and the progress bar) to refresh
+        }
+    }
+}

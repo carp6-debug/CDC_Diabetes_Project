@@ -1,0 +1,26 @@
+# --- .NET Artifacts ---
+[Bb]in/
+[Oo]bj/
+*.dll
+*.exe
+*.pdb
+*.user
+.vs/
+.vscode/
+
+# Specific ignores for Assembly and Cache noise
+*.AssemblyInfo.cs
+*.AssemblyAttributes.cs
+*.cache
+*.json
+
+# --- Python Artifacts ---
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+venv/
+.env
+
+# --- OS Specific ---
+.DS_Store
+Thumbs.db

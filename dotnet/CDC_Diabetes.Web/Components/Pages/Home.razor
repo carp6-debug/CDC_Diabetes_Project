@@ -1,0 +1,40 @@
+﻿@page "/"
+
+<PageTitle>CDC Diabetes Analytics</PageTitle>
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 text-center">
+            <h1 class="display-4 fw-bold text-primary mb-4">Diabetes Risk Analytics Portal</h1>
+            <p class="lead mb-5 text-muted">
+                An end-to-end Healthcare Intelligence demonstration. This system integrates 
+                <strong>253,680</strong> CDC survey records through a .NET 9 N-Tier architecture 
+                to provide real-time risk evaluation and data integrity reporting.
+            </p>
+            
+            <div class="d-grid gap-3 d-sm-flex justify-content-sm-center mb-5">
+                <a href="risk-assessment" class="btn btn-primary btn-lg px-4 gap-3">
+                    <i class="bi bi-shield-plus"></i> Run Risk Assessment
+                </a>
+                <a href="db-test" class="btn btn-outline-secondary btn-lg px-4">
+                    <i class="bi bi-database"></i> View Data Health
+                </a>
+            </div>
+
+            <div class="row g-4 py-5 row-cols-1 row-cols-lg-3 border-top">
+                <div class="feature col">
+                    <h3 class="fs-4 fw-bold">PostgreSQL</h3>
+                    <p class="small text-muted">Structured Star-Schema housing a quarter-million healthcare indicators.</p>
+                </div>
+                <div class="feature col">
+                    <h3 class="fs-4 fw-bold">.NET 9</h3>
+                    <p class="small text-muted">A robust C# backend utilizing Entity Framework Core and Scoped Services.</p>
+                </div>
+                <div class="feature col">
+                    <h3 class="fs-4 fw-bold">Predictive</h3>
+                    <p class="small text-muted">Weighted algorithm based on CDC-verified correlations and lifestyle habits.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

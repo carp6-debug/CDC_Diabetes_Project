@@ -1,0 +1,13 @@
+{
+    "sqltools.connections": [
+        {
+            "name": "cdc_diabetes_project",
+            "driver": "PostgreSQL",
+            "server": "localhost",
+            "port": 5432,
+            "database": "cdc_diabetes_project",
+            "username": "postgres",
+            "askForPassword": true
+        }
+    ]
+}
