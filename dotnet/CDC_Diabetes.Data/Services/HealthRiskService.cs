@@ -2,6 +2,25 @@ namespace CDC_Diabetes.Data.Services;
 
 using CDC_Diabetes.Models;
 
+/// <summary>
+/// MODULE: HealthcareDataEngine (Service Layer)
+/// ROLE: Programmer Analyst / Data Engineer
+/// 
+/// INTENT:
+/// This class serves as the core logic engine for the CDC Healthcare Analytics Portal.
+/// It acts as the "Tier 2" broker between the PostgreSQL Data Warehouse (Tier 3) 
+/// and the Blazor Presentation Layer (Tier 1).
+///
+/// DESIGN PATTERNS:
+/// - Dependency Injection: Decouples database context from UI logic.
+/// - Repository Pattern: Provides a structured interface for querying Fact/Dimension tables.
+/// - Data Normalization: Translates raw relational data into clinical risk models.
+///
+/// RESPONSIBILITIES:
+/// 1. Execute high-performance LINQ queries against the 253k record Star Schema.
+/// 2. Calculate patient-specific risk percentiles based on clinical indicators.
+/// 3. Abstract complex SQL joins into simplified DTOs for UI rendering.
+/// </summary>
 public class HealthRiskService : IHealthRiskService
 {
     public int CalculateRiskScore(FactDiabetesSurvey survey, DimLifestyle lifestyle)

@@ -1,16 +1,20 @@
 """
-Project: CDC Healthcare Analytics
-Module: ingestion.py
-Description: Processes raw CDC BRFSS CSV data into a normalized Star Schema.
-             Handles type casting for PostgreSQL BOOLEANs and maintains
-             referential integrity across Dimensions and Fact tables.
+health_diabetes_ingestion.py
+---------------------------------------------------------------------------------
 
-             This script targets the PostgreSQL Star Schema created by 
-             01_setup_schema.sql and is designed to be run after the 
-             schema is set up and before any analytics are performed. 
+PROJECT: CDC Healthcare Analytics
+ROLE: Data Engineering (ETL)
+---------------------------------------------------------------------------------
+SUMMARY: 
+This script implements the automated data pipeline between the raw CSV source 
+and the PostgreSQL Star Schema.
 
-             Author: Portfolio Project AI Advisor
-
+OBJECTIVES:
+1. Normalize flat-file data into relational Fact/Dimension tables.
+2. Perform high-integrity type casting (Code-to-Boolean mapping).
+3. Enforce relational constraints using SQLAlchemy ORM.
+4. Verify record counts (Target: 253,680) to ensure zero data loss.
+---------------------------------------------------------------------------------
 """
 
 import pandas as pd
