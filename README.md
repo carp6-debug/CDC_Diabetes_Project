@@ -51,25 +51,27 @@ This mapping determined how clinical "Facts" would be stratified against behavio
 * **Application:** .NET 9 (Blazor Server, Entity Framework Core)
 
 **Detailed Documentation:**
-- [Technical Architecture & Developer Guide](DEVELOPER.md)
-- [AI Integration & Governance](AI_GOVERNANCE.md)
+- [Technical Architecture & Developer Guide](./DEVELOPER.md)
+- [AI Integration & Governance](./AI_GOVERNANCE.md)
 
 ## 🏛️ System Architecture Tree
 ```text
-CDC_Diabetes_Project/
+CDC_DIABETES_PROJECT/
+├── data/                    # Source CDC Dataset
 ├── dotnet/                  # Tier 1 & 2: .NET 9 Web Stack
-│   ├── CDC_Diabetes.Web/    # Presentation: Blazor Components
-│   ├── CDC_Diabetes.Data/   # Logic: DbContext & Health Services
-│   └── CDC_Diabetes.Models/ # Objects: Star Schema Entity Definitions
+│   ├── CDC_Diabetes.Data/   # Logic: DbContext & Services
+│   ├── CDC_Diabetes.Models/ # Objects: Entity Definitions
+│   └── CDC_Diabetes.Web/    # Presentation: Blazor UI
+├── images/                  # All Project Evidence (Visual Assets)
 ├── scripts/                 # Tier 2: Analytical Engine
-│   ├── ingestion.py         # ETL Logic (Cleanse -> Cast -> Load)
-│   └── analytics.ipynb      # Clinical EDA & Prognostic Visualization
+│   ├── health_diabetes_analytics.ipynb # Updated Header Location
+│   └── health_diabetes_ingestion.py    # ETL Migration Logic
 ├── sql/                     # Tier 3: Data Warehouse
-│   ├── 01_setup_schema.sql  # DDL (Tables, Keys, Constraints)
-│   ├── 02_verification.sql  # Data Quality Audit Scripts
-│   └── 03_utilities.sql     # Analytical Views
-├── images/                  # Project Evidence (Centralized Assets)
-├── data/                    # Source Repository (CDC/Teboul Dataset)
+│   ├── 01_setup_schema.sql
+│   ├── 02_data_verification.sql
+│   └── 03_analytical_utilities.sql
+├── AI_GOVERNANCE.md         # AI Usage Disclosure
+├── DEVELOPER.md             # Architectural Deep-Dive
 └── README.md                # System Documentation
 
 ```
@@ -84,7 +86,7 @@ Our analytical engine identified critical health signatures by correlating lifes
 
 **Operational Value:** This data allows the .NET Service Layer to trigger high-priority alerts when a patient’s "General Health" and "BMI" values cross this specific density cluster.
 
-![Diabaetes Risk Density (Heatmap)](/images/diabetes_risk_heatmap.png)
+![Diabaetes Risk Density (Heatmap)](./images/diabetes_risk_heatmap.png)
 
 ### 🔍 Finding 2: Variable Correlation Matrix
 **Technical Objective:** Feature weighting for the Risk Assessment Service.
@@ -93,7 +95,7 @@ Our analytical engine identified critical health signatures by correlating lifes
 
 **Operational Value:** This matrix served as the requirement specification for the Blazor UI, prioritizing these fields in the user input form to ensure the most impactful data is collected first.
 
-![Variable Correlation Matrix](/images/correlation_matrix.png)
+![Variable Correlation Matrix](./images/correlation_matrix.png)
 
 ### 🔍 Finding 3: Age-BMI Stratification
 **Technical Objective:** Longitudinal data distribution audit.
@@ -102,7 +104,7 @@ Our analytical engine identified critical health signatures by correlating lifes
 
 **Operational Value:** Validates the relational integrity of the database—confirming that the 253,680 records were correctly indexed across the 13-level age scale during the Python ingestion process.
 
-![Age-BMI Stratification](/images/age_bmi_trends.png)
+![Age-BMI Stratification](./images/age_bmi_trends.png)
 
 ### 🔍 Finding 4: Lifestyle Impact Analysis
 **Technical Objective:** Verifying the "Mitigation Effect" of lifestyle factors.
@@ -111,7 +113,7 @@ Our analytical engine identified critical health signatures by correlating lifes
 
 **Operational Value:** This finding supports the Business Analyst goal of providing holistic advice. The .NET 9 application can now calculate a "Lifestyle Offset" score to show patients how activity levels are actively mitigating their clinical risk.
 
-![Lifestyle Impact Analysis](/images/lifestyle_impact.png)
+![Lifestyle Impact Analysis](./images/lifestyle_impact.png)
 
 ### 🌐 Plot 5: Operational Risk Assessment Dashboard (.NET 9)
 
@@ -139,20 +141,19 @@ To provide a clear audit trail of the system's front-end capabilities, the follo
 
 ---
 **Portal Home:**
-![Portal Home:](/images/CDCHealth_Dashboard2.jpg)
+![Portal Home:](./images/CDCHealth_Dashboard2.jpg)
 ---
 **System Health Check:**
-![System Health](/images/CDCSystemHealthCheck2.jpg)
+![System Health](./images/CDCSystemHealthCheck2.jpg)
 ---
 **Risk Assessment: Low (Baseline):**
-![Risk Variation (Low)](/images/HealthIndicators25-Smoke.jpg)
+![Risk Variation (Low)](./images/HealthIndicators25-Smoke.jpg)
 ---
 **Risk Assessment: Moderate (Clinical Trigger):**
-![Risk Variation (Moderate)](/images/HealthIndicators25-HBP.jpg)
+![Risk Variation (Moderate)](./images/HealthIndicators25-HBP.jpg)
 ---
 **Risk Assessment: High (Clustered Risk):**
-![Risk Variation (High)](/images/HealthIndicators25-HBP-HC.jpg)
-
+![Risk Variation (High)](./images/HealthIndicators25-HBP-HC.jpg)
 ---
 
 ## 🚀 Getting Started: How to Run
@@ -161,7 +162,7 @@ This system is designed as a decoupled **3-Tier environment**. To initialize the
 ### 1. Database Initialization (Tier 3)
 Ensure you have a **PostgreSQL** instance running. Execute the scripts in the `/sql` directory to build the relational warehouse:
 * `01_setup_schema.sql` (Creates the Star Schema/Tables)
-* `03_analytics_utilities.sql` (Optional: Adds helper views for reporting)
+* `03_analytical_utilities.sql` (Optional: Adds helper views for reporting)
 
 ### 2. Data Ingestion & Analytics (Tier 2)
 You must populate the database before the .NET application can surface clinical metrics.
